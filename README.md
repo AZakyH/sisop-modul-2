@@ -113,15 +113,128 @@ Child process.
 PID: 13102, Parent's PID: 1
 ```
 
-Penjelasan:
+### **exec**
+
+```exec``` adalah fungsi untuk menjalankan program baru dan menggantikan program yang sedang berjalan. Fungsi ```exec``` memiliki banyak variasi seperti ```execvp```, ```execlp```, dan ```execv```.
+
+Contoh yang akan digunakan adalah ```execv```.
+
 ```c
+#include <stdio.h>
+#include <unistd.h>
 
-// Parent Program
-pid_t child_id;
+int main () {
+  
+  // argv[n] = { {your-program-name}, {argument[1]}, {argument[2]},.....,{argument[n-2]}, NULL }
+  char *argv[4] = {"list", "-l", "/home/", NULL};
+  
+  execv("/bin/ls", argv);
 
-child_id = fork();
-pid = getpid();
+  printf("This line will not be executed\n");
 
+  return 0;
+
+}
+```
+
+### **Menjalankan Program Secara Bersamaan**
+
+Dengan menggabungkan ```fork``` dan ```exec```, kita dapat melakukan dua atau lebih _tasks_ secara bersamaan. Contohnya adalah membackup log yang berbeda secara bersamaan.
+
+```c
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+int main() {
+  pid_t child_id;
+
+  child_id = fork();
+  
+  if (child_id < 0) {
+    exit(EXIT_FAILURE); // Jika gagal membuat proses baru, program akan berhenti
+  }
+
+  if (child_id == 0) {
+    // this is child
+    
+    char *argv[] = {"cp", "/var/log/apt/history.log", "/home/[user]/", NULL};
+    execv("/bin/cp", argv);
+  } else {
+    // this is parent
+    
+    char *argv[] = {"cp", "/var/log/dpkg.log", "/home/[user]/", NULL};
+    execv("/bin/cp", argv);
+  }
+}
+```
+
+Jika ingin melakukan banyak task secara bersamaan tanpa mementingkan urutan kerjanya, dapat menggunakan ```fork``` dan ```exec```.
+
+### **wait** x **fork** x **exec**
+
+Kita dapat menjalankan dua proses dalam satu program. Contoh penggunaannya adalah membuat folder dan mengisi folder tersebut dengan suatu file. Pertama, buat folder terlebih dahulu. Kemudian, buat file dengan perintah shell ```touch``` pada folder tersebut. Namun, pada kenyataannya untuk melakukan dua hal bersamaan perlu adanya jeda beberapa saat. 
+
+Untuk membuat file yang berada dalam suatu folder, pertama-tama folder harus ada terlebih dahulu. Untuk _delay_ suatu proses dapat menggunakan _system call_ ```wait```.
+
+```c
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+int main() {
+  pid_t child_id;
+  int status;
+
+  child_id = fork();
+  
+  if (child_id < 0) {
+    exit(EXIT_FAILURE); // Jika gagal membuat proses baru, program akan berhenti
+  }
+
+  if (child_id == 0) {
+    // this is child
+    
+    char *argv[] = {"mkdir", "-p", "folderku", NULL};
+    execv("/bin/mkdir", argv);
+  } else {
+    // this is parent
+    while ((wait(&status)) > 0);
+    char *argv[] = {"touch", "folderku/fileku.txt", NULL};
+    execv("/usr/bin/touch", argv);
+  }
+}
+```
+
+Pada contoh di atas, fungsi ```wait``` adalah menunggu _child process_ selesai melakukan tugasnya, yaitu membuat folder. Setelah _terminated_, _parent process_ akan kembali menjalankan prosesnya membuat ```fileku``` dalam folder ```folderku```.
+
+### **system**
+
+```system``` adalah fungsi untuk melakukan pemanggilan perintah shell secara langsung dari program C. Contohnya ketika ingin memanggil suatu script dalam program C. ```system(ls)``` akan menghasilkan output yang sama ketika memanggilnya di shell script dengan ```ls```.
+
+File inibash.sh:
+```sh
+#!/bin/bash
+
+echo "Shell script dipanggil"
+
+```
+
+File system.c:
+```c
+#include <stdlib.h>
+
+int main() {
+  int return_value;
+  return_value = system("bash inibash.sh");
+  return return_value;
+}
+
+```
+
+Output:
+```
+Shell script dipanggil
 ```
 
 
