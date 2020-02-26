@@ -52,7 +52,7 @@ Penjelasan:
   * **CMD**: perintah yang menjalankan proses tersebut
 
 ## 4. Menghentikan Proses
-Untuk menghentikan (_terminate_) proses yang berjalan, jalankan perintah shell ```kill [options] <pid>```. Biasanya untuk menghentikan paksa suatu proses dapat menggunakan perintah ```kill -9 <pid>```. 
+Untuk menghentikan (_terminate_) proses yang berjalan, jalankan perintah shell ```kill [options] <pid>```. Biasanya untuk menghentikan paksa suatu proses dapat menggunakan perintah ```kill -9 <pid>```. Angka _9_ adalah kode Signal untuk terminate suatu process.
 
 ### Macam-Macam Signal
 
@@ -70,3 +70,47 @@ Secara default ketika menggunakan perintah shell ```kill <pid>```, akan mengguna
 
 ### **fork**
 ```fork``` adalah fungsi _system call_ di C untuk melakukan _spawning process_. Setelah memanggil fungsi itu, akan terdapat proses baru yang merupakan _child process_ dan mengembalikan nilai 0 untuk _child process_ dan nilai _PID_ untuk _parent process_. 
+
+Coba program dibawah ini dan compile terlebih dahulu dengan ```gcc coba.c -o coba```
+
+Kemudian execute program dengan ```./coba```
+
+```c
+#include <stdio.h> 
+#include <sys/types.h> 
+#include <unistd.h> 
+
+int main(){
+  pid_t child_id;
+
+  child_id = fork();
+
+  printf("Ini akan kepanggil 2 kali\n");
+  
+  if(child_id != 0){
+    printf("\nParent process.\nPID: %d, Child's PID: %d\n", (int)getpid(), (int)child_id);
+  }else {
+    printf("\nChild process.\nPID: %d, Parent's PID: %d\n", (int)getpid(), (int)getppid());
+  }
+
+  return 0;
+}
+```
+
+Hasilnya akan menjadi:
+```
+Ini akan kepanggil 2 kali
+
+Parent process.
+PID: 13101, Child's PID: 13102
+Ini akan kepanggil 2 kali
+
+Child process.
+PID: 13102, Parent's PID: 1
+```
+
+Penjelasan:
+
+
+
+
