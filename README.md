@@ -251,7 +251,7 @@ Ada beberapa langkah untuk membuat sebuah daemon:
 ### 2.1 Melakukan Fork pada Parent Process dan mematikan Parent Process
 Langkah pertama adalah membuat sebuah parent process dan memunculkan child process dengan melakukan `fork()`. Kemudian bunuh parent process agar sistem operasi mengira bahwa proses telah selesai.
 
-```
+```c
 pid_t pid;        // Variabel untuk menyimpan PID
 
 pid = fork();     // Menyimpan PID dari Child Process
@@ -274,7 +274,7 @@ Setiap file dan directory memiliki _permission_ atau izin yang mengatur siapa sa
 
 Dengan menggunakan `umask` kita dapat mengatur _permission_ dari suatu file pada saat file itu dibuat. Di sini kita mengatur nilai `umask(0)` agar kita mendapatkan akses full terhadap file yang dibuat oleh daemon.
 
-```
+```c
 umask(0);
 ```
 
@@ -283,7 +283,7 @@ Sebuah Child Process harus memiliki SID agar dapat berjalan. Tanpa adanya SID, C
 
 Untuk mendapatkan SID kita dapat menggunakan perintah `setsid()`. Perintah tersebut memiliki _return type_ yang sama dengan perintah `fork()`.
 
-```
+```c
 sid = setsid();
 if (sid < 0) {
   exit(EXIT_FAILURE);
@@ -295,7 +295,7 @@ Working directory harus diubah ke suatu directory yang pasti ada. Untuk amannya,
 
 Untuk mengubah Working Directory, kita dapat menggunakan perintah `chdir()`.
 
-```
+```c
 if ((chdir("/")) < 0) {
   exit(EXIT_FAILURE);
 }
@@ -304,7 +304,7 @@ if ((chdir("/")) < 0) {
 ### 2.5 Menutup File Descriptor Standar
 Sebuah daemon tidak boleh menggunakan terminal. Oleh sebab itu kita harus _menutup_ file descriptor standar (STDIN, STDOUT, STDERR).
 
-```
+```c
 close(STDIN_FILENO);
 close(STDOUT_FILENO);
 close(STDERR_FILENO);
@@ -313,7 +313,7 @@ close(STDERR_FILENO);
 ### 2.6 Membuat Loop Utama
 Di loop utama ini lah tempat kita menuliskan inti dari program kita. Jangan lupa beri perintah `sleep()` agar loop berjalan pada suatu interval.
 
-```
+```c
 while (1) {
   // Tulis program kalian di sini
 
@@ -324,7 +324,7 @@ while (1) {
 ## 3. Implementasi Daemon
 Di bawah ini adalah kode hasil gabungan dari langkah-langkah pembuatan daemon (template Daemon):
 
-```
+```c
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
