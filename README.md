@@ -398,5 +398,7 @@ Buatlah sebuah daemon yang berjalan setiap 5 detik yang dapat melakukan backup i
 
 
 ## Referensi
+* https://notes.shichao.io/apue/ch8/
+* https://www.geeksforgeeks.org/exec-family-of-functions-in-c/
 * http://www.netzmafia.de/skripten/unix/linux-daemon-howto.html
 * https://www.computerhope.com/unix/uumask.htm
