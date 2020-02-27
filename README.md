@@ -325,43 +325,66 @@ while (1) {
 Di bawah ini adalah kode hasil gabungan dari langkah-langkah pembuatan daemon:
 
 ```
-pid_t pid;        // Variabel untuk menyimpan PID
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <unistd.h>
+#include <syslog.h>
+#include <string.h>
 
-pid = fork();     // Menyimpan PID dari Child Process
+int main() {
+  pid_t pid;        // Variabel untuk menyimpan PID
 
-/* Keluar saat fork gagal
- * (nilai variabel pid < 0) */
-if (pid < 0) {
-  exit(EXIT_FAILURE);
-}
+  pid = fork();     // Menyimpan PID dari Child Process
 
-/* Keluar saat fork berhasil
- * (nilai variabel pid adalah PID dari child process) */
-if (pid > 0) {
-  exit(EXIT_SUCCESS);
-}
+  /* Keluar saat fork gagal
+  * (nilai variabel pid < 0) */
+  if (pid < 0) {
+    exit(EXIT_FAILURE);
+  }
 
-umask(0);
+  /* Keluar saat fork berhasil
+  * (nilai variabel pid adalah PID dari child process) */
+  if (pid > 0) {
+    exit(EXIT_SUCCESS);
+  }
 
-sid = setsid();
-if (sid < 0) {
-  exit(EXIT_FAILURE);
-}
+  umask(0);
 
-if ((chdir("/")) < 0) {
-  exit(EXIT_FAILURE);
-}
+  sid = setsid();
+  if (sid < 0) {
+    exit(EXIT_FAILURE);
+  }
 
-close(STDIN_FILENO);
-close(STDOUT_FILENO);
-close(STDERR_FILENO);
+  if ((chdir("/")) < 0) {
+    exit(EXIT_FAILURE);
+  }
 
-while (1) {
-  // Tulis program kalian di sini
+  close(STDIN_FILENO);
+  close(STDOUT_FILENO);
+  close(STDERR_FILENO);
 
-  sleep(30);
+  while (1) {
+    // Tulis program kalian di sini
+
+    sleep(30);
+  }
 }
 ```
+### 3.1 Meng-_compile_ program daemon
+Untuk menjalankan daemon process pertama kita compile program C yang telah kita buat dengan perintah `gcc [nama_program.c] -o [nama_file_outputd]`.
+
+### 3.2 Menjalankan program daemon
+Setelah melakukan langkah sebelumnya, akan muncul sebuah file executeable yang dapat dijalankan dengan `./nama_file_outputd`.
+
+### 3.3 Periksa apakah Daemon process berjalan
+Untuk memeriksa process apa saja yang sedang berlangsung kita dapat menggunakan perintah `ps -aux`. Untuk menemukan Daemon process yang kita _run_, manfaatkan `grep`. Sehingga perintahnya menjadi `ps -aux | grep "nama_file_outputd"`. Bila ada, berarti daemon process kita sedang berjalan.
+
+### 3.4 Mematikan Daemon process yang sedang berjalan
+Untuk mematikan daemon process kita akan menggunakan perintah `kill`. Pertama kita harus menemukan PID dari Daemon process yang akan dimatikan. Kita dapat menemukan PID tersebut pada langkah sebelumnya. Lalu jalankan `sudo kill -9 pid` untuk mematikan process-nya. `-9` sendiri merupakan kill signal seperti sudah dijelaskan di awal.
 
 # Soal Latihan
 ### Latihan 1
@@ -372,7 +395,6 @@ Buatlah sebuah program yang program yang dapat mengcopy folder beserta semua isi
 
 ### Latihan 3
 Buatlah sebuah daemon yang berjalan setiap 5 detik yang dapat melakukan backup isi dari file *diary.txt* yang disimpan dalam file *diary.log.{no}* (contoh: diary.log.1 , diary.log.2, … ) lalu menghapus isi *diary.txt* tersebut sehingga file tersebut kosong kembali. **Tidak diperbolehkan menggunakan exec dan system.**
-
 
 
 ## Referensi
