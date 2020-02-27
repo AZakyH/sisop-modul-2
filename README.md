@@ -20,6 +20,7 @@ Menggunakan:
         * [1. Pengertian Daemon](#1-pengertian-daemon)
         * [2. Langkah Pembuatan Daemon](#2-langkah-pembuatan-daemon)
         * [3. Contoh Implementasi Daemon](#3-contoh-implementasi-daemon)
+    * [Soal Latihan](#soal-latihan)
 
 # Proses
 
@@ -361,6 +362,18 @@ while (1) {
   sleep(30);
 }
 ```
+
+# Soal Latihan
+### Latihan 1
+Modifikasi code soal1 agar output nya menjadi angka urut dari 0 sampai 100, tanpa menghapus fungsi yang sudah ada.
+
+### Latihan 2
+Buatlah sebuah program yang program yang dapat mengcopy folder beserta semua isi dari folder di */home/{USER}/Music* ke dalam sebuah folder dengan format nama *tanggal-bulan-tahun_jam:menit:detik* (contoh: 25-02-2020_16:37:53). **Gunakan fork, exec, dan wait.**
+
+### Latihan 3
+Buatlah sebuah daemon yang berjalan setiap 5 detik yang dapat melakukan backup isi dari file *diary.txt* yang disimpan dalam file *diary.log.{no}* (contoh: diary.log.1 , diary.log.2, … ) lalu menghapus isi *diary.txt* tersebut sehingga file tersebut kosong kembali. **Tidak diperbolehkan menggunakan exec dan system.**
+
+
 
 ## Referensi
 * http://www.netzmafia.de/skripten/unix/linux-daemon-howto.html
