@@ -365,7 +365,7 @@ while (1) {
 
 # Soal Latihan
 ### Latihan 1
-Modifikasi code soal1 agar output nya menjadi angka urut dari 0 sampai 100, tanpa menghapus fungsi yang sudah ada.
+Modifikasi code [soal1](https://github.com/AZakyH/sisop-modul-2/blob/master/soal1.c) agar output nya menjadi angka urut dari 0 sampai 100, tanpa menghapus fungsi yang sudah ada.
 
 ### Latihan 2
 Buatlah sebuah program yang program yang dapat mengcopy folder beserta semua isi dari folder di */home/{USER}/Music* ke dalam sebuah folder dengan format nama *tanggal-bulan-tahun_jam:menit:detik* (contoh: 25-02-2020_16:37:53). **Gunakan fork, exec, dan wait.**
