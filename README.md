@@ -321,8 +321,8 @@ while (1) {
 }
 ```
 
-## 3. Kerangka Utama Daemon
-Di bawah ini adalah kode hasil gabungan dari langkah-langkah pembuatan daemon:
+## 3. Implementasi Daemon
+Di bawah ini adalah kode hasil gabungan dari langkah-langkah pembuatan daemon (template Daemon):
 
 ```
 #include <sys/types.h>
@@ -384,7 +384,7 @@ Setelah melakukan langkah sebelumnya, akan muncul sebuah file executeable yang d
 Untuk memeriksa process apa saja yang sedang berlangsung kita dapat menggunakan perintah `ps -aux`. Untuk menemukan Daemon process yang kita _run_, manfaatkan `grep`. Sehingga perintahnya menjadi `ps -aux | grep "nama_file_outputd"`. Bila ada, berarti daemon process kita sedang berjalan.
 
 ### 3.4 Mematikan Daemon process yang sedang berjalan
-Untuk mematikan daemon process kita akan menggunakan perintah `kill`. Pertama kita harus menemukan PID dari Daemon process yang akan dimatikan. Kita dapat menemukan PID tersebut pada langkah sebelumnya. Lalu jalankan `sudo kill -9 pid` untuk mematikan process-nya. `-9` sendiri merupakan kill signal seperti sudah dijelaskan di awal.
+Untuk mematikan daemon process kita akan menggunakan perintah `kill`. Pertama kita harus menemukan PID dari Daemon process yang akan dimatikan. Kita dapat menemukan PID tersebut pada langkah sebelumnya. Lalu jalankan `sudo kill -9 pid` untuk mematikan process-nya.
 
 # Soal Latihan
 ### Latihan 1
