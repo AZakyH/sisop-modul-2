@@ -19,7 +19,7 @@ Menggunakan:
     * [Daemon](#daemon)
         * [1. Pengertian Daemon](#1-pengertian-daemon)
         * [2. Langkah Pembuatan Daemon](#2-langkah-pembuatan-daemon)
-        * [3. [Implementasi Daemon](#3-implementasi-daemon)
+        * [3. Implementasi Daemon](#3-implementasi-daemon)
     * [Soal Latihan](#soal-latihan)
 
 # Proses
