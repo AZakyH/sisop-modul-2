@@ -394,7 +394,7 @@ Modifikasi code [soal1](https://github.com/AZakyH/sisop-modul-2/blob/master/soal
 Buatlah sebuah program yang program yang dapat mengcopy folder beserta semua isi dari folder di */home/{USER}/Music* ke dalam sebuah folder dengan format nama *tanggal-bulan-tahun_jam:menit:detik* (contoh: 25-02-2020_16:37:53). **Gunakan fork, exec, dan wait.**
 
 ### Latihan 3
-Buatlah sebuah daemon yang berjalan setiap 5 detik yang dapat melakukan backup isi dari file *diary.txt* yang disimpan dalam file *diary.log.{no}* (contoh: diary.log.1 , diary.log.2, … ) lalu menghapus isi *diary.txt* tersebut sehingga file tersebut kosong kembali. **Tidak diperbolehkan menggunakan exec dan system.**
+Buatlah sebuah daemon yang berjalan setiap 10 detik yang dapat melakukan backup isi dari file *diary.txt* yang disimpan dalam file *diary.log.{no}* (contoh: diary.log.1 , diary.log.2, … ) lalu menghapus isi *diary.txt* tersebut sehingga file tersebut kosong kembali. **Tidak diperbolehkan menggunakan exec dan system.**
 
 
 ## Referensi
