@@ -37,6 +37,8 @@ Menggunakan:
 
 # Proses
 
+[Daftar Isi](#daftar-isi)
+
 ## 1. Pengertian
 Proses adalah kondisi dimana OS menjalankan (eksekusi) suatu program. Ketika suatu program tersebut dieksekusi oleh OS, proses tersebut memiliki PID (Process ID) yang merupakan identifier dari suatu proses. Pada UNIX, untuk melihat proses yang dieksekusi oleh OS dengan memanggil perintah shell ```ps```. Untuk melihat lebih lanjut mengenai perintah ```ps``` dapat membuka ```man ps```.
 
@@ -310,6 +312,9 @@ Shell script dipanggil
 
 
 ## 6. Jenis-Jenis Proses
+
+[Daftar Isi](#daftar-isi)
+
 ### **Zombie Process**
 
 Zombie Process terjadi karena adaanya child process yang di exit namun parrent processnya tidak tahu bahwa child process tersebut telah di terminate, misalnya disebabkan karena putusnya network. Sehingga parent process tidak merelease process yang masih digunakan oleh child process tersebut walaupun process tersebut sudah mati.
@@ -325,6 +330,9 @@ Daemon Process adalah sebuah proses yang bekerja pada background karena proses i
 ---
 
 # Daemon
+
+[Daftar Isi](#daftar-isi)
+
 ## 1. Pengertian Daemon
 Daemon adalah suatu program yang berjalan di background secara terus menerus tanpa adanya interaksi secara langsung dengan user yang sedang aktif.
 
@@ -470,6 +478,9 @@ Untuk memeriksa process apa saja yang sedang berlangsung kita dapat menggunakan 
 Untuk mematikan daemon process kita akan menggunakan perintah `kill`. Pertama kita harus menemukan PID dari Daemon process yang akan dimatikan. Kita dapat menemukan PID tersebut pada langkah sebelumnya. Lalu jalankan `sudo kill -9 pid` untuk mematikan process-nya.
 
 # Soal Latihan
+
+[Daftar Isi](#daftar-isi)
+
 ### Latihan 1
 Modifikasi code [soal1](https://github.com/AZakyH/sisop-modul-2/blob/master/soal1.c) agar output nya menjadi angka urut dari 0 sampai 100, tanpa menghapus fungsi yang sudah ada dan menggunakan **wait**.
 
