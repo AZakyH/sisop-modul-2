@@ -37,14 +37,17 @@ Menggunakan:
 
 # Proses
 
+## 1. Pengertian
+
 [Daftar Isi](#daftar-isi)
 
-## 1. Pengertian
 Proses adalah kondisi dimana OS menjalankan (eksekusi) suatu program. Ketika suatu program tersebut dieksekusi oleh OS, proses tersebut memiliki PID (Process ID) yang merupakan identifier dari suatu proses. Pada UNIX, untuk melihat proses yang dieksekusi oleh OS dengan memanggil perintah shell ```ps```. Untuk melihat lebih lanjut mengenai perintah ```ps``` dapat membuka ```man ps```.
 
 Dalam penggunaannya, suatu proses dapat membentuk proses lainnya yang disebut _spawning process_. Proses yang memanggil proses lainnya disebut **_parent process_** dan yang terpanggil disebut **_child process_**. Selain itu ada juga **_orphan process_** (_child process_ yang _parent_-nya sudah selesai atau berhenti tetapi _child process_-nya sendiri tetap berjalan) dan **_zombie process_** (_child process_ yang sudah selesai/exit tetapi _parent process_-nya tidak tahu sehingga dia tetap muncul di _process table_).
 
 ## 2. Macam-Macam PID
+
+[Daftar Isi](#daftar-isi)
 
 ### 2.1 User ID (UID)
 Merupakan identifier dari suatu proses yang menampilkan user yang menjalankan suatu program. Pada program C, dapat memanggil fungsi ``` uid_t getuid(void);```
@@ -57,6 +60,9 @@ Setiap proses memiliki identifier tersendiri dan juga setelah proses tersebut me
 pid_t getppid(void);```.
 
 ## 3. Melihat Proses Berjalan
+
+[Daftar Isi](#daftar-isi)
+
 Untuk melihat proces yang sedang berjalan di OS, dapat menggunakan ```ps -ef``` untuk melihat secara detailnya.
 
 ![show ps](img/showps.png)
@@ -72,6 +78,9 @@ Penjelasan:
   * **CMD**: perintah yang menjalankan proses tersebut
 
 ## 4. Menghentikan Proses
+
+[Daftar Isi](#daftar-isi)
+
 Untuk menghentikan (_terminate_) proses yang berjalan, jalankan perintah shell ```kill [options] <pid>```. Biasanya untuk menghentikan paksa suatu proses dapat menggunakan perintah ```kill -9 <pid>```. Angka _9_ adalah kode Signal untuk terminate suatu process.
 
 ### Macam-Macam Signal
@@ -87,6 +96,8 @@ Untuk menghentikan (_terminate_) proses yang berjalan, jalankan perintah shell `
 Secara default ketika menggunakan perintah shell ```kill <pid>```, akan menggunakan ```SIGSTOP``` yang mana akan menghentikan proses namun masih dapat dilanjutkan kembali.
 
 ## 5. Membuat Proses
+
+[Daftar Isi](#daftar-isi)
 
 ### **fork**
 ```fork``` adalah fungsi _system call_ di C untuk melakukan _spawning process_. Setelah memanggil fungsi itu, akan terdapat proses baru yang merupakan _child process_ dan mengembalikan nilai 0 untuk _child process_ dan nilai _PID_ untuk _parent process_. 
@@ -129,7 +140,7 @@ Child process.
 PID: 13102, Parent's PID: 1
 ```
 
-Penjelasan:
+Visualisasi:
 ```c
 +-------------------------+
 |   Parent Process        |
