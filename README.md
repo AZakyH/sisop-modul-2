@@ -16,6 +16,19 @@ Menggunakan:
             * [2.1 User ID (UID)](#21-user-id-(uid))
             * [2.2 Process ID (PID)](#22-process-id-(pid))
             * [2.3 Parent PID (PPID)](#23-parent-pid-(ppid))
+        * [3. Melihat Proses Berjalan](#3-melihat-proses-berjalan)
+        * [4. Menghentikan Proses](#4-menghentikan-proses)
+        * [5. Membuat Proses](#5-membuat-proses)
+            * [fork](#fork)
+            * [exec](#exec)
+            * [Menjalankan Program Secara Bersamaan](#menjalankan-program-secara-bersamaan)
+            * [Menjalankan Program Secara Bersamaan](#menjalankan-program-secara-bersamaan)
+            * [wait x fork x exec](#wait-x-fork-x-exec)
+            * [system](#system)
+        * [6. Jenis-Jenis Proses](#6-jenis-jenis-proses)
+            * [Zombie Process](#zombie-process)
+            * [Orphan Process](#orphan-process)
+            * [Daemon Process](#daemon-process)
     * [Daemon](#daemon)
         * [1. Pengertian Daemon](#1-pengertian-daemon)
         * [2. Langkah Pembuatan Daemon](#2-langkah-pembuatan-daemon)
@@ -114,6 +127,41 @@ Child process.
 PID: 13102, Parent's PID: 1
 ```
 
+Penjelasan:
+```c
++-------------------------+
+|   Parent Process        |
++-------------------------+
+|   int main() {          |
+|     pid_t child_id;     |
+|                         |
+|     pid = getpid();     |
+|     ppid = getppid();   |
+|                         |
+|-->  child_id = fork();  |
++-------------------------+
+|    pid = 20             |
+|    child_id = undefined |
+|    ppid = 10            |
++-------------------------+
+         |\
+         | \----------------------------------\
+         |                                     |
+         V                                     V
++-------------------------+        +-------------------------+
+|   Parent Process        |        |     Child Process       |
++-------------------------+        +-------------------------+
+|-->                      |        |-->                      |
+|     pid = getpid();     |        |     pid = getpid();     |
+|     ppid = getppid();   |        |     ppid = getppid();   |
+|   }                     |        |   }                     |
++-------------------------+        +-------------------------+
+|    pid = 20             |        |    pid = 23             |
+|    child_id = 23        |        |    child_id = 0         |
+|    ppid = 10            |        |    ppid = 20            |
++-------------------------+        +-------------------------+
+```
+
 ### **exec**
 
 ```exec``` adalah fungsi untuk menjalankan program baru dan menggantikan program yang sedang berjalan. Fungsi ```exec``` memiliki banyak variasi seperti ```execvp```, ```execlp```, dan ```execv```.
@@ -169,6 +217,28 @@ int main() {
   }
 }
 ```
+
+Visualisasi:
+```c
++--------+
+| pid=7  |
+| ppid=4 |
+| bash   |
++--------+
+    |
+    | calls fork
+    V                         
++--------+                     +--------+
+| pid=7  |    forks            | pid=22 |
+| ppid=4 | ------------------> | ppid=7 |
+| bash   |                     | bash   |
++--------+                     +--------+
+    |                              |
+    | calls exec to run touch      | calls exec to run mkdir
+    |                              |
+    V                              V
+```
+
 
 Jika ingin melakukan banyak task secara bersamaan tanpa mementingkan urutan kerjanya, dapat menggunakan ```fork``` dan ```exec```.
 
@@ -238,6 +308,19 @@ Output:
 Shell script dipanggil
 ```
 
+
+## 6. Jenis-Jenis Proses
+### **Zombie Process**
+
+Zombie Process terjadi karena adaanya child process yang di exit namun parrent processnya tidak tahu bahwa child process tersebut telah di terminate, misalnya disebabkan karena putusnya network. Sehingga parent process tidak merelease process yang masih digunakan oleh child process tersebut walaupun process tersebut sudah mati.
+
+### **Orphan Process**
+
+Orphan Process adalah sebuah proses yang ada dalam komputer dimana parent process telah selesai atau berhenti bekerja namun proses anak sendiri tetap berjalan.
+
+### **Daemon Process**
+
+Daemon Process adalah sebuah proses yang bekerja pada background karena proses ini tidak memiliki terminal pengontrol. Dalam sistem operasi Windows biasanya lebih dikenal dengan sebutan service. Daemon adalah sebuah proses yang didesain supaya proses tersebut tidak mendapatkan intervensi dari user.
 
 ---
 
