@@ -43,7 +43,7 @@ Menggunakan:
 
 Proses adalah kondisi dimana OS menjalankan (eksekusi) suatu program. Ketika suatu program tersebut dieksekusi oleh OS, proses tersebut memiliki PID (Process ID) yang merupakan identifier dari suatu proses. Pada UNIX, untuk melihat proses yang dieksekusi oleh OS dengan memanggil perintah shell ```ps```. Untuk melihat lebih lanjut mengenai perintah ```ps``` dapat membuka ```man ps```.
 
-Dalam penggunaannya, suatu proses dapat membentuk proses lainnya yang disebut _spawning process_. Proses yang memanggil proses lainnya disebut **_parent process_** dan yang terpanggil disebut **_child process_**. Selain itu ada juga **_orphan process_** (_child process_ yang _parent_-nya sudah selesai atau berhenti tetapi _child process_-nya sendiri tetap berjalan) dan **_zombie process_** (_child process_ yang sudah selesai/exit tetapi _parent process_-nya tidak tahu sehingga dia tetap muncul di _process table_).
+Dalam penggunaannya, suatu proses dapat membentuk proses lainnya yang disebut _spawning process_. Proses yang memanggil proses lainnya disebut **_parent process_** dan yang terpanggil disebut **_child process_**.
 
 ## 2. Macam-Macam PID
 
