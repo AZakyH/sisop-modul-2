@@ -32,7 +32,7 @@ Menggunakan:
     * [Daemon](#daemon)
         * [1. Pengertian Daemon](#1-pengertian-daemon)
         * [2. Langkah Pembuatan Daemon](#2-langkah-pembuatan-daemon)
-        * [3. Contoh Implementasi Daemon](#3-contoh-implementasi-daemon)
+        * [3. Implementasi Daemon](#3-implementasi-daemon)
     * [Soal Latihan](#soal-latihan)
 
 # Proses
@@ -40,7 +40,7 @@ Menggunakan:
 ## 1. Pengertian
 Proses adalah kondisi dimana OS menjalankan (eksekusi) suatu program. Ketika suatu program tersebut dieksekusi oleh OS, proses tersebut memiliki PID (Process ID) yang merupakan identifier dari suatu proses. Pada UNIX, untuk melihat proses yang dieksekusi oleh OS dengan memanggil perintah shell ```ps```. Untuk melihat lebih lanjut mengenai perintah ```ps``` dapat membuka ```man ps```.
 
-Dalam penggunaannya, suatu proses dapat membentuk proses lainnya yang disebut _spawning process_. Proses yang memanggil proses lainnya disebut _parent process_ dan yang terpanggil disebut _child process_.
+Dalam penggunaannya, suatu proses dapat membentuk proses lainnya yang disebut _spawning process_. Proses yang memanggil proses lainnya disebut **_parent process_** dan yang terpanggil disebut **_child process_**. Selain itu ada juga **_orphan process_** (_child process_ yang _parent_-nya sudah selesai atau berhenti tetapi _child process_-nya sendiri tetap berjalan) dan **_zombie process_** (_child process_ yang sudah selesai/exit tetapi _parent process_-nya tidak tahu sehingga dia tetap muncul di _process table_).
 
 ## 2. Macam-Macam PID
 
@@ -93,7 +93,7 @@ Coba program dibawah ini dan compile terlebih dahulu dengan ```gcc coba.c -o cob
 
 Kemudian execute program dengan ```./coba```
 
-```c
+```
 #include <stdio.h> 
 #include <sys/types.h> 
 #include <unistd.h> 
@@ -168,7 +168,7 @@ Penjelasan:
 
 Contoh yang akan digunakan adalah ```execv```.
 
-```c
+```
 #include <stdio.h>
 #include <unistd.h>
 
@@ -190,7 +190,7 @@ int main () {
 
 Dengan menggabungkan ```fork``` dan ```exec```, kita dapat melakukan dua atau lebih _tasks_ secara bersamaan. Contohnya adalah membackup log yang berbeda secara bersamaan.
 
-```c
+```
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -248,7 +248,7 @@ Kita dapat menjalankan dua proses dalam satu program. Contoh penggunaannya adala
 
 Untuk membuat file yang berada dalam suatu folder, pertama-tama folder harus ada terlebih dahulu. Untuk _delay_ suatu proses dapat menggunakan _system call_ ```wait```.
 
-```c
+```
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -292,7 +292,7 @@ echo "Shell script dipanggil"
 ```
 
 File system.c:
-```c
+```
 #include <stdlib.h>
 
 int main() {
@@ -334,7 +334,7 @@ Ada beberapa langkah untuk membuat sebuah daemon:
 ### 2.1 Melakukan Fork pada Parent Process dan mematikan Parent Process
 Langkah pertama adalah membuat sebuah parent process dan memunculkan child process dengan melakukan `fork()`. Kemudian bunuh parent process agar sistem operasi mengira bahwa proses telah selesai.
 
-```c
+```
 pid_t pid;        // Variabel untuk menyimpan PID
 
 pid = fork();     // Menyimpan PID dari Child Process
@@ -357,7 +357,7 @@ Setiap file dan directory memiliki _permission_ atau izin yang mengatur siapa sa
 
 Dengan menggunakan `umask` kita dapat mengatur _permission_ dari suatu file pada saat file itu dibuat. Di sini kita mengatur nilai `umask(0)` agar kita mendapatkan akses full terhadap file yang dibuat oleh daemon.
 
-```c
+```
 umask(0);
 ```
 
@@ -366,7 +366,7 @@ Sebuah Child Process harus memiliki SID agar dapat berjalan. Tanpa adanya SID, C
 
 Untuk mendapatkan SID kita dapat menggunakan perintah `setsid()`. Perintah tersebut memiliki _return type_ yang sama dengan perintah `fork()`.
 
-```c
+```
 sid = setsid();
 if (sid < 0) {
   exit(EXIT_FAILURE);
@@ -378,7 +378,7 @@ Working directory harus diubah ke suatu directory yang pasti ada. Untuk amannya,
 
 Untuk mengubah Working Directory, kita dapat menggunakan perintah `chdir()`.
 
-```c
+```
 if ((chdir("/")) < 0) {
   exit(EXIT_FAILURE);
 }
@@ -387,7 +387,7 @@ if ((chdir("/")) < 0) {
 ### 2.5 Menutup File Descriptor Standar
 Sebuah daemon tidak boleh menggunakan terminal. Oleh sebab itu kita harus _menutup_ file descriptor standar (STDIN, STDOUT, STDERR).
 
-```c
+```
 close(STDIN_FILENO);
 close(STDOUT_FILENO);
 close(STDERR_FILENO);
@@ -396,7 +396,7 @@ close(STDERR_FILENO);
 ### 2.6 Membuat Loop Utama
 Di loop utama ini lah tempat kita menuliskan inti dari program kita. Jangan lupa beri perintah `sleep()` agar loop berjalan pada suatu interval.
 
-```c
+```
 while (1) {
   // Tulis program kalian di sini
 
@@ -407,7 +407,7 @@ while (1) {
 ## 3. Implementasi Daemon
 Di bawah ini adalah kode hasil gabungan dari langkah-langkah pembuatan daemon (template Daemon):
 
-```c
+```
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
@@ -419,7 +419,7 @@ Di bawah ini adalah kode hasil gabungan dari langkah-langkah pembuatan daemon (t
 #include <string.h>
 
 int main() {
-  pid_t pid;        // Variabel untuk menyimpan PID
+  pid_t pid, sid;        // Variabel untuk menyimpan PID
 
   pid = fork();     // Menyimpan PID dari Child Process
 
@@ -471,13 +471,13 @@ Untuk mematikan daemon process kita akan menggunakan perintah `kill`. Pertama ki
 
 # Soal Latihan
 ### Latihan 1
-Modifikasi code [soal1](https://github.com/AZakyH/sisop-modul-2/blob/master/soal1.c) agar output nya menjadi angka urut dari 0 sampai 100, tanpa menghapus fungsi yang sudah ada.
+Modifikasi code [soal1](https://github.com/AZakyH/sisop-modul-2/blob/master/soal1.c) agar output nya menjadi angka urut dari 0 sampai 100, tanpa menghapus fungsi yang sudah ada dan menggunakan **wait**.
 
 ### Latihan 2
-Buatlah sebuah program yang program yang dapat mengcopy folder beserta semua isi dari folder di */home/{USER}/Music* ke dalam sebuah folder dengan format nama *tanggal-bulan-tahun_jam:menit:detik* (contoh: 25-02-2020_16:37:53). **Gunakan fork, exec, dan wait.**
+Buatlah sebuah program yang dapat mengcopy folder beserta semua isi dari folder di */home/{USER}/Music* ke dalam sebuah folder dengan format nama *tanggal-bulan-tahun_jam:menit:detik* (contoh: 25-02-2020_16:37:53). **Gunakan fork, exec, dan wait.**
 
 ### Latihan 3
-Buatlah sebuah daemon yang berjalan setiap 5 detik yang dapat melakukan backup isi dari file *diary.txt* yang disimpan dalam file *diary.log.{no}* (contoh: diary.log.1 , diary.log.2, … ) lalu menghapus isi *diary.txt* tersebut sehingga file tersebut kosong kembali. **Tidak diperbolehkan menggunakan exec dan system.**
+Buatlah sebuah daemon yang berjalan setiap 10 detik yang dapat melakukan backup isi dari file *diary.txt* yang disimpan dalam file *diary.log.{no}* (contoh: diary.log.1 , diary.log.2, … ) lalu menghapus isi *diary.txt* tersebut sehingga file tersebut kosong kembali. **Tidak diperbolehkan menggunakan exec dan system.**
 
 
 ## Referensi
